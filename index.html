@@ -3,20 +3,27 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Météo Tunisie</title>
+<title>Météo Tunisie : prévisions comparées ECMWF, GFS, ICON, alertes et carte</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0b6fa4">
+<meta name="description" content="Prévisions météo en Tunisie et dans le monde, en français, arabe et anglais : comparaison des grands centres, alertes sirocco, mer, agriculture et carte."><link rel="canonical" href="https://meteotunisie.github.io/Meteotunisie/">
+<meta property="og:type" content="website"><meta property="og:title" content="Météo Tunisie : prévisions comparées ECMWF, GFS, ICON, alertes et carte"><meta property="og:description" content="Prévisions météo en Tunisie et dans le monde, en français, arabe et anglais : comparaison des grands centres, alertes sirocco, mer, agriculture et carte."><meta property="og:url" content="https://meteotunisie.github.io/Meteotunisie/"><meta property="og:image" content="https://meteotunisie.github.io/Meteotunisie/icon-512.png"><meta name="twitter:card" content="summary">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Météo Tunisie","applicationCategory":"WeatherApplication","operatingSystem":"Web, Android","inLanguage":["fr","ar","en"],"url":"https://meteotunisie.github.io/Meteotunisie/","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <style>
-:root{--ink:#0e2a3b;--mute:#58717f;--card:rgba(255,255,255,.88);--line:rgba(14,42,59,.12);--acc:#0b7bd0;--acc2:#12c2a8;--warn:#d9480f;--s1:#2d8fe3;--s2:#bfe5fa;--sh:0 10px 28px rgba(8,50,95,.18)}
+:root{--h1:rgba(6,58,108,.55);--h2:rgba(6,58,108,.22);--top:rgba(8,40,72,.4);--dr1:#14507f;--dr2:#0c2f55;--ink:#0e2a3b;--mute:#58717f;--card:rgba(255,255,255,.88);--line:rgba(14,42,59,.12);--acc:#0b7bd0;--acc2:#12c2a8;--warn:#d9480f;--s1:#2d8fe3;--s2:#bfe5fa;--sh:0 10px 28px rgba(8,50,95,.18)}
 html[data-theme=dark],body[data-sky=night]{--ink:#e8f2fa;--mute:#9db6c8;--card:rgba(13,31,50,.84);--line:rgba(255,255,255,.14);--sh:0 10px 28px rgba(0,0,0,.4)}
 body[data-sky=pcloud]{--s1:#4f9de0;--s2:#d3e8f6}body[data-sky=cloud]{--s1:#667d93;--s2:#c9d4de}body[data-sky=rain]{--s1:#42586d;--s2:#9fb2c3}body[data-sky=night]{--s1:#091428;--s2:#1c4a7a}
 html[data-theme=dark] body{--s1:#091428;--s2:#16385f}
+html[data-th=ocean] body{--ink:#06303f;--mute:#4b6f7d;--card:rgba(255,255,255,.9);--line:rgba(6,48,63,.12);--acc:#0096c7;--acc2:#2ec4b6;--s1:#00708f;--s2:#8fe0d6;--h1:rgba(0,70,95,.6);--h2:rgba(0,90,110,.25);--top:rgba(0,60,80,.45);--dr1:#0b6a88;--dr2:#06384c}
+html[data-th=sahara] body{--ink:#3a1c0a;--mute:#7a5a45;--card:rgba(255,250,243,.92);--line:rgba(90,40,10,.14);--acc:#d9480f;--acc2:#f2a516;--s1:#d9772b;--s2:#f8e0b5;--h1:rgba(120,45,10,.62);--h2:rgba(150,70,15,.28);--top:rgba(100,40,8,.45);--dr1:#8a3a10;--dr2:#4a1f08}
+html[data-th=night] body{--ink:#ece9ff;--mute:#a9a5d0;--card:rgba(22,19,56,.86);--line:rgba(255,255,255,.14);--acc:#8b7bff;--acc2:#35d0ff;--s1:#0a0f2c;--s2:#2b1b63;--h1:rgba(70,55,190,.5);--h2:rgba(40,30,120,.25);--top:rgba(10,8,40,.5);--dr1:#1d1850;--dr2:#0d0b2a}
 *{box-sizing:border-box}
 body{margin:0;min-height:100vh;color:var(--ink);background:linear-gradient(180deg,var(--s1),var(--s2)) fixed;font:16px/1.5 "Segoe UI","Noto Sans Arabic",Tahoma,system-ui,sans-serif;padding-bottom:env(safe-area-inset-bottom,0px)}
-.top{position:sticky;top:0;z-index:50;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 14px;padding-top:calc(10px + env(safe-area-inset-top,0px));background:rgba(8,40,72,.4);backdrop-filter:blur(14px);color:#fff}
+.top{position:sticky;top:0;z-index:50;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 14px;padding-top:calc(10px + env(safe-area-inset-top,0px));background:var(--top);backdrop-filter:blur(14px);color:#fff}
 .brand{display:flex;align-items:center;gap:8px}.tools{display:flex;align-items:center;gap:8px}
 h1{font-size:1.2rem;margin:0;font-weight:800}
 .logo{font-size:1.8rem;display:inline-block;animation:float 4s ease-in-out infinite}
@@ -24,6 +31,23 @@ h1{font-size:1.2rem;margin:0;font-weight:800}
 .lg button,.ic{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:999px;padding:5px 10px;font-weight:700}
 .lg button[aria-pressed=true]{background:#fff;color:#0b4f86}
 .wrap{max-width:980px;margin:0 auto;padding:12px 14px 24px}
+.vl a{display:inline-block;margin:3px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;color:var(--ink);text-decoration:none}.ft a{color:#fff}
+button:active{transform:scale(.97)}
+.sw{display:inline-block;width:18px;height:18px;border-radius:50%;margin-inline-end:6px;vertical-align:-3px;border:2px solid rgba(255,255,255,.75)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.chip{padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);font-size:.85rem}
+html[data-anim=calm] #fx,html[data-anim=flow] #fx,html[data-anim=off] #fx{display:none}
+html[data-anim=calm] .logo,html[data-anim=calm] .hicon,html[data-anim=flow] .hicon{animation:none}
+html[data-anim=off] *{animation:none!important;transition:none!important}
+html[data-anim=flow] body::before{content:"";position:fixed;inset:-20%;z-index:-1;pointer-events:none;background:radial-gradient(40% 40% at 20% 30%,rgba(255,255,255,.4),transparent 60%),radial-gradient(35% 35% at 80% 20%,var(--acc2),transparent 60%),radial-gradient(45% 45% at 60% 80%,var(--acc),transparent 60%);filter:blur(30px);opacity:.55;animation:flow 18s ease-in-out infinite alternate}
+@keyframes flow{to{transform:translate(6%,4%) rotate(12deg) scale(1.1)}}
+#tabbar{display:none}
+@media (max-width:719px){#tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:60;justify-content:space-around;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));background:var(--card);backdrop-filter:blur(16px);border-top:1px solid var(--line);box-shadow:0 -6px 20px rgba(0,0,0,.14)}
+#tabbar a,#tabbar button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--ink);text-decoration:none;font-size:.7rem;background:none;border:0;padding:4px 0;border-radius:12px;cursor:pointer}
+#tabbar i{font-style:normal;font-size:1.25rem}#tabbar .on{color:var(--acc);font-weight:700}.wrap{padding-bottom:88px}}
+select{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:8px 14px;max-width:100%}
+#d14 table{min-width:0;font-size:.85rem}#d14 td,#d14 th{padding:6px 3px}
+.tr3{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:10px 0}
+.tm{border:1px solid var(--line);border-radius:16px;padding:12px;text-align:center}.tm b{font-size:1.7rem;display:block}.hot{color:#d9480f}.cold{color:#1c7ed6}
 .sub,.ft{color:rgba(255,255,255,.92);margin:4px 0 10px;text-shadow:0 1px 6px rgba(0,0,0,.25)}
 button,input{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:8px 14px}
 button{cursor:pointer;transition:transform .15s,box-shadow .15s}button:hover{transform:translateY(-1px)}
@@ -34,7 +58,7 @@ button[aria-pressed=true]{background:linear-gradient(135deg,var(--acc),var(--acc
 section{background:var(--card);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:22px;padding:16px;margin:14px 0;box-shadow:var(--sh);animation:up .6s both;scroll-margin-top:70px}
 h2{font-size:1.08rem;margin:0 0 10px;font-weight:800}
 h2::before{content:"";display:inline-block;width:6px;height:1em;border-radius:3px;background:linear-gradient(var(--acc),var(--acc2));margin-inline-end:8px;vertical-align:-2px}
-.hero{position:relative;overflow:hidden;color:#fff;background:linear-gradient(135deg,rgba(6,58,108,.55),rgba(6,58,108,.22));border-color:rgba(255,255,255,.35);padding:20px}
+.hero{position:relative;overflow:hidden;color:#fff;background:linear-gradient(135deg,var(--h1),var(--h2));border-color:rgba(255,255,255,.35);padding:20px}
 .hero button{background:rgba(255,255,255,.2);color:#fff;border-color:rgba(255,255,255,.45)}
 .hz{position:relative;z-index:1}.hrow{display:flex;justify-content:space-between;align-items:center;gap:10px}
 .pl{font-size:1.15rem;font-weight:700}.hc{font-size:1.05rem;opacity:.95}
@@ -73,7 +97,7 @@ th:first-child,td:first-child{text-align:start}th{font-weight:400;color:var(--mu
 .alr{border:1px solid var(--line);border-left:5px solid #d99a00;background:transparent;border-radius:12px;padding:8px 12px;margin:6px 0}
 .alr.l2{border-left-color:var(--warn)}
 #ov{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:90}
-#drawer{position:fixed;top:0;bottom:0;left:0;width:min(330px,86vw);z-index:100;background:linear-gradient(180deg,#14507f,#0c2f55);color:#fff;padding:calc(14px + env(safe-area-inset-top,0px)) 14px 20px;transform:translateX(-105%);transition:transform .3s;overflow:auto;box-shadow:0 0 40px rgba(0,0,0,.45)}
+#drawer{position:fixed;top:0;bottom:0;left:0;width:min(330px,86vw);z-index:100;background:linear-gradient(180deg,var(--dr1),var(--dr2));color:#fff;padding:calc(14px + env(safe-area-inset-top,0px)) 14px 20px;transform:translateX(-105%);transition:transform .3s;overflow:auto;box-shadow:0 0 40px rgba(0,0,0,.45)}
 html[dir=rtl] #drawer{left:auto;right:0;transform:translateX(105%)}
 #drawer.open,html[dir=rtl] #drawer.open{transform:none}
 .dh{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-size:1.25rem;font-weight:800}
@@ -103,6 +127,8 @@ html[dir=rtl] #drawer{left:auto;right:0;transform:translateX(105%)}
  <div class="dh"><span>⛅ <span data-x="app"></span></span><button id="dx" aria-label="Close">✕</button></div>
  <nav id="dnav">
   <a href="#s-days" class="on"><i>🏠</i><span data-x="n_7"></span></a>
+  <a href="#s-14"><i>📅</i><span data-x="n_14"></span></a>
+  <a href="#s-tr3"><i>📈</i><span data-x="n_trend"></span></a>
   <a href="#s-today"><i>🕐</i><span data-x="n_today"></span></a>
   <a href="#s-map"><i>🗺️</i><span data-x="map_h"></span></a>
   <a href="#s-alerts"><i>⚠️</i><span data-x="a_h"></span></a>
@@ -110,26 +136,36 @@ html[dir=rtl] #drawer{left:auto;right:0;transform:translateX(105%)}
   <hr>
   <a href="#s-sea"><i>🌊</i><span data-x="n_sea"></span></a>
   <a href="#s-agri"><i>🌾</i><span data-x="n_agri"></span></a>
+  <hr>
+  <a href="abonnements.html"><i>💳</i><span data-x="plans"></span></a>
  </nav>
  <hr>
  <h3 data-x="m_lang"></h3><div class="seg"><button data-l="fr">Français</button><button data-l="ar">العربية</button><button data-l="en">English</button></div>
- <h3 data-x="m_theme"></h3><div class="seg" id="thm"><button data-t="auto" data-x="th_a"></button><button data-t="light" data-x="th_l"></button><button data-t="dark" data-x="th_d"></button></div>
+ <h3 data-x="m_theme"></h3><div class="seg" id="thm">
+  <button data-t="sky"><i class="sw" style="background:linear-gradient(135deg,#2d8fe3,#bfe5fa)"></i><span data-x="th_sky"></span></button>
+  <button data-t="ocean"><i class="sw" style="background:linear-gradient(135deg,#00708f,#8fe0d6)"></i><span data-x="th_ocean"></span></button>
+  <button data-t="sahara"><i class="sw" style="background:linear-gradient(135deg,#d9772b,#f8e0b5)"></i><span data-x="th_sahara"></span></button>
+  <button data-t="night"><i class="sw" style="background:linear-gradient(135deg,#0a0f2c,#2b1b63)"></i><span data-x="th_night"></span></button></div>
+ <h3 data-x="m_anim"></h3><div class="seg" id="anm"><button data-a="weather" data-x="an_weather"></button><button data-a="flow" data-x="an_flow"></button><button data-a="calm" data-x="an_calm"></button><button data-a="off" data-x="an_off"></button></div>
  <h3>&nbsp;</h3><div class="seg"><button id="inst" hidden data-x="install"></button></div>
 </aside>
+<nav id="tabbar"><a href="#s-hero" class="on"><i>🏠</i><span data-x="tb_home"></span></a><a href="#s-today"><i>🕐</i><span data-x="tb_today"></span></a><a href="#s-days"><i>📅</i><span data-x="tb_days"></span></a><a href="#s-map"><i>🗺️</i><span data-x="tb_map"></span></a><button id="tbmenu"><i>☰</i><span data-x="tb_menu"></span></button></nav>
 <div class="wrap">
 <p class="sub" data-x="sub"></p>
 <div class="search"><input id="q" data-p="ph" aria-label="Search"><button id="go" data-x="go"></button><button id="loc" data-x="loc"></button></div>
 <div class="row" id="hits"></div>
 <div class="row" id="favs"></div>
-<section class="hero"><div id="fx"></div><div class="hz">
+<section class="hero" id="s-hero"><div id="fx"></div><div class="hz">
  <div class="hrow"><div><div id="place" class="pl"></div><div class="big" id="temp">–</div><div id="hcond" class="hc"></div></div><div class="hicon" id="hicon">⛅</div></div>
- <div id="sub" class="hs"></div>
- <div class="hf"><span id="stamp"></span><button id="star"></button></div></div></section>
+ <div id="sub" class="hs"></div><div class="chips" id="chips"></div>
+ <div class="hf"><span id="stamp"></span><span><button id="share" data-x="share"></button> <button id="star"></button></span></div></div></section>
 <div id="status"></div>
 <section id="s-alerts"><h2 data-x="a_h"></h2><div id="alerts"></div><p class="mute" data-x="a_n"></p></section>
 <section id="s-today"><h2 data-x="n_today"></h2><div class="hours" id="hours"></div></section>
 <section id="s-days"><h2 data-x="d_h"></h2><div class="dcards" id="dcards"></div><div id="dday" style="margin-top:12px"></div></section>
 <section id="s-trend"><h2 data-x="tr_h"></h2><div id="outlook"></div></section>
+<section id="s-14"><h2 data-x="n_14"></h2><div id="d14"></div><p class="mute" data-x="d14_note"></p></section>
+<section id="s-tr3"><h2 data-x="n_trend"></h2><label class="mute" for="ctry" data-x="tr_country"></label> <select id="ctry"></select><div id="trend"></div><p class="mute" data-x="tr_note"></p></section>
 <section id="s-map"><h2 data-x="map_h"></h2>
  <div class="tabs" id="mtabs"><button data-m="wind" aria-pressed="true" data-x="wind"></button><button data-m="rain" aria-pressed="false" data-x="radar"></button><button data-m="clouds" aria-pressed="false" data-x="clouds"></button></div>
  <div class="tabs" id="btabs"><button data-b="osm" aria-pressed="true" data-x="b_osm"></button><button data-b="sat" aria-pressed="false" data-x="b_sat"></button></div>
@@ -139,7 +175,8 @@ html[dir=rtl] #drawer{left:auto;right:0;transform:translateX(105%)}
 <section id="s-centres"><h2 data-x="c_h"></h2><div class="models" id="models"></div><p class="mute" data-x="c_n"></p></section>
 <section><div class="tabs" id="tabs"></div><div class="scroll"><svg id="chart" viewBox="0 0 800 300" role="img" aria-label="Chart"></svg></div></section>
 <section><h2 data-x="tbl_h"></h2><div class="scroll"><table id="table"></table></div></section>
-<p class="ft" data-x="foot"></p>
+<section id="s-villes"><h2 data-x="villes"></h2><p class="mute" data-x="g_tn"></p><p class="vl"><a href="meteo-tunis.html">Tunis</a><a href="meteo-ariana.html">Ariana</a><a href="meteo-ben-arous.html">Ben Arous</a><a href="meteo-la-manouba.html">La Manouba</a><a href="meteo-nabeul.html">Nabeul</a><a href="meteo-zaghouan.html">Zaghouan</a><a href="meteo-bizerte.html">Bizerte</a><a href="meteo-beja.html">Béja</a><a href="meteo-jendouba.html">Jendouba</a><a href="meteo-le-kef.html">Le Kef</a><a href="meteo-siliana.html">Siliana</a><a href="meteo-sousse.html">Sousse</a><a href="meteo-monastir.html">Monastir</a><a href="meteo-mahdia.html">Mahdia</a><a href="meteo-sfax.html">Sfax</a><a href="meteo-kairouan.html">Kairouan</a><a href="meteo-kasserine.html">Kasserine</a><a href="meteo-sidi-bouzid.html">Sidi Bouzid</a><a href="meteo-gabes.html">Gabès</a><a href="meteo-medenine.html">Médenine</a><a href="meteo-tataouine.html">Tataouine</a><a href="meteo-gafsa.html">Gafsa</a><a href="meteo-tozeur.html">Tozeur</a><a href="meteo-kebili.html">Kébili</a><a href="meteo-djerba.html">Djerba</a><a href="meteo-hammamet.html">Hammamet</a><a href="meteo-tabarka.html">Tabarka</a><a href="meteo-douz.html">Douz</a></p><p class="mute" data-x="g_w"></p><p class="vl"><a href="meteo-paris.html">Paris</a><a href="meteo-marseille.html">Marseille</a><a href="meteo-lyon.html">Lyon</a><a href="meteo-bruxelles.html">Bruxelles</a><a href="meteo-geneve.html">Genève</a><a href="meteo-montreal.html">Montréal</a><a href="meteo-londres.html">Londres</a><a href="meteo-madrid.html">Madrid</a><a href="meteo-rome.html">Rome</a><a href="meteo-berlin.html">Berlin</a><a href="meteo-istanbul.html">Istanbul</a><a href="meteo-le-caire.html">Le Caire</a><a href="meteo-alger.html">Alger</a><a href="meteo-casablanca.html">Casablanca</a><a href="meteo-rabat.html">Rabat</a><a href="meteo-tripoli.html">Tripoli</a><a href="meteo-dubai.html">Dubaï</a><a href="meteo-riyad.html">Riyad</a><a href="meteo-doha.html">Doha</a><a href="meteo-beyrouth.html">Beyrouth</a><a href="meteo-new-york.html">New York</a><a href="meteo-sao-paulo.html">São Paulo</a><a href="meteo-dakar.html">Dakar</a><a href="meteo-lagos.html">Lagos</a><a href="meteo-nairobi.html">Nairobi</a><a href="meteo-johannesburg.html">Johannesburg</a><a href="meteo-mumbai.html">Mumbai</a><a href="meteo-jakarta.html">Jakarta</a><a href="meteo-tokyo.html">Tokyo</a><a href="meteo-sydney.html">Sydney</a></p></section>
+<p class="ft"><span data-x="foot"></span> · <a href="confidentialite.html" data-x="priv"></a> · <a href="abonnements.html" data-x="plans"></a> · <a href="admin.html" data-x="admin"></a></p>
 </div>
 
 <script>
@@ -178,6 +215,17 @@ map_n:["Touchez la carte pour choisir un lieu. Fonds de carte : OpenStreetMap.",
 c_h:["Centres de prévision","Forecast centres","مراكز التنبؤ"],
 c_n:["Cochez plusieurs centres pour voir où les modèles s'accordent ou divergent : plus les courbes sont écartées, moins la prévision est fiable.","Tick several centres to see where models agree or differ: the wider apart the curves, the less reliable the forecast.","اختر عدة مراكز لترى أين تتفق النماذج أو تختلف: كلما تباعدت المنحنيات قلت موثوقية التوقع."],
 tbl_h:["Maximales et minimales par jour","Daily highs and lows","العظمى والصغرى اليومية"],th_day:["Jour","Day","اليوم"],th_gap:["Écart max","Max gap","أقصى فارق"],
+n_14:["Prévisions 14 jours","14-day forecast","توقعات 14 يوما"],n_trend:["Tendance sur 3 mois","3-month outlook","اتجاه 3 أشهر"],plans:["Abonnements et services","Plans and services","الاشتراكات والخدمات"],admin:["Espace administrateur","Admin area","فضاء الإدارة"],
+d14_note:["Au-delà de 7 jours, la fiabilité baisse. Le point indique l'accord entre ECMWF et GFS : vert bon, orange moyen, rouge faible.","Beyond 7 days, reliability drops. The dot shows agreement between ECMWF and GFS: green good, orange fair, red low.","بعد 7 أيام تقل الموثوقية. تشير النقطة إلى التوافق بين ECMWF وGFS: أخضر جيد، برتقالي متوسط، أحمر ضعيف."],
+d14_no:["Prévisions 14 jours indisponibles pour le moment.","14-day forecast unavailable right now.","توقعات 14 يوما غير متاحة حاليا."],
+tr_country:["Pays","Country","البلد"],tr_no:["Tendance saisonnière indisponible pour le moment.","Seasonal outlook unavailable right now.","الاتجاه الموسمي غير متاح حاليا."],
+tr_note:["Tendance saisonnière du modèle ECMWF SEAS5 pour quelques villes du pays : un indice de probabilité par rapport à la normale, pas une prévision jour par jour.","Seasonal trend from the ECMWF SEAS5 model for a few cities in the country: a probability hint versus normal, not a day-by-day forecast.","اتجاه موسمي من نموذج ECMWF SEAS5 لبعض مدن البلد: مؤشر احتمالي مقارنة بالمعدل الطبيعي وليس توقعا يوميا."],
+tr_warm:["plus chaud que la normale","warmer than normal","أدفأ من المعتاد"],tr_cool:["plus frais que la normale","cooler than normal","أبرد من المعتاد"],tr_norm:["proche de la normale","near normal","قريب من المعتاد"],tr_wet:["plus humide","wetter","أكثر رطوبة"],tr_dry:["plus sec","drier","أكثر جفافا"],
+tr_sum:["Tendance du trimestre : {0}, {1}.","Quarter trend: {0}, {1}.","اتجاه الفصل: {0}، {1}."],
+th_sky:["Ciel","Sky","السماء"],th_ocean:["Méditerranée","Mediterranean","المتوسط"],th_sahara:["Sahara","Sahara","الصحراء"],th_night:["Nuit","Night","الليل"],
+m_anim:["Animation","Animation","الحركة"],an_weather:["Selon la météo","Weather-based","حسب الطقس"],an_flow:["Dégradé vivant","Living gradient","تدرج حي"],an_calm:["Douce","Calm","هادئة"],an_off:["Aucune","None","بدون"],
+tb_home:["Accueil","Home","الرئيسية"],tb_today:["Heures","Hours","الساعات"],tb_days:["7 jours","7 days","7 أيام"],tb_map:["Carte","Map","الخريطة"],tb_menu:["Menu","Menu","القائمة"],
+share:["Partager","Share","مشاركة"],copied:["Lien copié","Link copied","تم نسخ الرابط"],priv:["Confidentialité et sources","Privacy and sources","الخصوصية والمصادر"],villes:["Villes","Cities","المدن"],g_tn:["Tunisie","Tunisia","تونس"],g_w:["Dans le monde","Worldwide","في العالم"],
 foot:["Données : Open-Meteo, qui agrège les centres nationaux de prévision.","Data: Open-Meteo, aggregating national forecast centres.","البيانات: Open-Meteo التي تجمع مراكز التنبؤ الوطنية."],
 tab_t:["Température (°C)","Temperature (°C)","الحرارة (°م)"],tab_r:["Pluie cumulée (mm)","Cumulative rain (mm)","الأمطار المتراكمة (مم)"],tab_w:["Vent (km/h)","Wind (km/h)","الرياح (كم/س)"],tab_c:["Nuages (%)","Clouds (%)","الغيوم (%)"],
 c0:["Pluvieux","Rainy","ماطر"],c1:["Averses","Showers","زخات"],c2:["Couvert","Overcast","غائم كليا"],c3:["Nuageux","Cloudy","غائم"],c4:["Peu nuageux","Mostly sunny","غائم جزئيا"],c5:["Venteux","Windy","عاصف"],c6:["Ensoleillé","Sunny","مشمس"],
@@ -210,16 +258,19 @@ o_f2:["Fiabilité : les modèles s'accordent bien, prévision plutôt fiable.","
 al_hh:["Fortes chaleurs","Extreme heat","حر شديد"],al_h:["Chaleur","Heat","حرارة مرتفعة"],al_c:["Froid","Cold","برد"],al_s:["Sirocco probable","Sirocco likely","رياح القبلي (السيروكو) محتملة"],al_sd:["air chaud et sec du sud","hot dry air from the south","هواء حار وجاف من الجنوب"],
 al_w:["Vent fort","Strong wind","رياح قوية"],al_g:["rafales {0} km/h","gusts {0} km/h","هبات {0} كم/س"],al_pp:["Fortes pluies","Heavy rain","أمطار غزيرة"],al_p:["Pluie soutenue","Steady rain","أمطار متواصلة"],
 al_sea:["Mer agitée","Rough sea","بحر هائج"],al_v:["vagues {0} m","waves {0} m","أمواج {0} م"],al_none:["Aucune alerte particulière cette semaine.","No particular alert this week.","لا تنبيهات خاصة هذا الأسبوع."]};
-let L=(()=>{const a=ld("mt_lang");if(a)return a;const n=(navigator.language||"fr").slice(0,2);return["fr","en","ar"].includes(n)?n:"fr"})();
-const LI=()=>({fr:0,en:1,ar:2})[L],LC=()=>L==="ar"?"ar-TN-u-nu-latn":L;
+let LG=(()=>{const a=ld("mt_lang");if(a)return a;const n=(navigator.language||"fr").slice(0,2);return["fr","en","ar"].includes(n)?n:"fr"})();
+const LI=()=>({fr:0,en:1,ar:2})[LG],LC=()=>LG==="ar"?"ar-TN-u-nu-latn":LG;
 const t=(k,...a)=>{let s=(S[k]||[k,k,k])[LI()];a.forEach((v,i)=>s=s.split("{"+i+"}").join(v));return s};
-let seaV=null,thm=ld("mt_theme")||"auto",dp=null,fxk="";
-function applyTheme(){const d=thm==="dark"||(thm==="auto"&&matchMedia("(prefers-color-scheme:dark)").matches);document.documentElement.dataset.theme=d?"dark":"light";[...$("thm").children].forEach(b=>b.setAttribute("aria-pressed",b.dataset.t===thm))}
-function setLang(l){L=l;sv("mt_lang",l);const h=document.documentElement;h.lang=l;h.dir=l==="ar"?"rtl":"ltr";document.title=t("app");
+let seaV=null,thm=ld("mt_theme")||"sky",anim=ld("mt_anim")||(matchMedia("(prefers-reduced-motion:reduce)").matches?"off":"weather"),dp=null,fxk="";
+function applyTheme(){if(!["sky","ocean","sahara","night"].includes(thm))thm="sky";if(!["weather","flow","calm","off"].includes(anim))anim="weather";
+ const h=document.documentElement;h.dataset.th=thm;h.dataset.theme=thm==="night"?"dark":"light";h.dataset.anim=anim;
+ [...$("thm").children].forEach(b=>b.setAttribute("aria-pressed",b.dataset.t===thm));[...$("anm").children].forEach(b=>b.setAttribute("aria-pressed",b.dataset.a===anim));
+ const m=document.querySelector("meta[name=theme-color]");if(m)m.content=({sky:"#2d8fe3",ocean:"#00708f",sahara:"#d9772b",night:"#0a0f2c"})[thm]}
+function setLang(l){LG=l;sv("mt_lang",l);const h=document.documentElement;h.lang=l;h.dir=l==="ar"?"rtl":"ltr";if(!window.PRESET)document.title=t("app");
  document.querySelectorAll("[data-x]").forEach(e=>e.textContent=t(e.dataset.x));
  document.querySelectorAll("[data-p]").forEach(e=>e.placeholder=t(e.dataset.p));
  document.querySelectorAll("[data-l]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.l===l));
- drawTabs();drawModels();drawFavs();applyTheme();if(data)render()}
+ drawTabs();drawModels();drawFavs();drawCtry();if(d14)draw14();if(tr)drawTr();applyTheme();if(data)render()}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-l]");if(b)setLang(b.dataset.l)});
 $("thm").onclick=e=>{const b=e.target.closest("[data-t]");if(b){thm=b.dataset.t;sv("mt_theme",thm);applyTheme()}};
 const dro=o=>{$("drawer").classList.toggle("open",o);$("ov").hidden=!o;$("menu").setAttribute("aria-expanded",o);$("drawer").setAttribute("aria-hidden",!o)};
@@ -248,7 +299,7 @@ function seaTable(){
 }
 async function agri(){
  ag=null;
- try{const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${place.lat}&longitude=${place.lon}&daily=et0_fao_evapotranspiration,precipitation_sum,temperature_2m_min,temperature_2m_max&timezone=auto&forecast_days=7`);ag=(await r.json()).daily}catch(e){}
+ try{ag=(await cf(`https://api.open-meteo.com/v1/forecast?latitude=${place.lat}&longitude=${place.lon}&daily=et0_fao_evapotranspiration,precipitation_sum,temperature_2m_min,temperature_2m_max&timezone=auto&forecast_days=7`,60*60*1000)).daily}catch(e){}
  agriTable();
 }
 function agriTable(){
@@ -259,11 +310,60 @@ function agriTable(){
  $("agric").innerHTML="<table>"+h+"</table>";
 }
 $("dx").onclick=()=>dro(false);
+$("anm").onclick=e=>{const b=e.target.closest("[data-a]");if(b){anim=b.dataset.a;sv("mt_anim",anim);applyTheme()}};
+$("tbmenu").onclick=()=>$("menu").click();
+$("tabbar").addEventListener("click",e=>{const a=e.target.closest("a");if(a)[...$("tabbar").querySelectorAll("a")].forEach(x=>x.classList.toggle("on",x===a))});
+function chips(){if(!data)return;const i=idxNow(),x=dayInfo(data.hourly.time[i].slice(0,10)),w=series("wind_speed_10m").map(s=>s.y[i]).filter(z=>z!=null),wv=w.length?Math.round(av(w))+" km/h":"–";
+ $("chips").innerHTML=[["↑",Math.round(x.hi)+"°"],["↓",Math.round(x.lo)+"°"],["💨",wv],["☔",x.p.toFixed(1)+" mm"],["☁️",Math.round(x.c)+"%"]].concat(seaV!=null?[["🌊",seaV+"°"]]:[]).map(c=>`<span class="chip">${c[0]} ${c[1]}</span>`).join("")}
+$("share").onclick=async()=>{const root=location.href.split("?")[0].split("#")[0].replace(/[^/]*$/,""),u=root+"?lat="+place.lat+"&lon="+place.lon+"&n="+encodeURIComponent(place.name);
+ try{if(navigator.share)await navigator.share({title:t("app")+" · "+place.name,url:u});else{await navigator.clipboard.writeText(u);$("share").textContent=t("copied");setTimeout(()=>$("share").textContent=t("share"),2000)}}catch(e){}};
 $("dnav").addEventListener("click",e=>{const a=e.target.closest("a");if(a){[...$("dnav").querySelectorAll("a")].forEach(x=>x.classList.toggle("on",x===a))}});
+const CTRY={TN:[[36.81,10.18],[34.74,10.76],[33.92,8.13]],DZ:[[36.75,3.06],[35.70,-0.63],[22.79,5.52]],MA:[[34.02,-6.84],[31.63,-7.99],[27.15,-13.20]],LY:[[32.89,13.19],[32.12,20.09],[27.04,14.43]],EG:[[30.04,31.24],[31.20,29.92],[24.09,32.90]],MR:[[18.08,-15.98]],ML:[[12.64,-8.00]],NE:[[13.51,2.11]],SD:[[15.50,32.56]],SA:[[24.71,46.68],[21.54,39.17]],AE:[[25.20,55.27]],QA:[[25.29,51.53]],KW:[[29.38,47.99]],OM:[[23.59,58.41]],LB:[[33.89,35.50]],JO:[[31.95,35.93]],SY:[[33.51,36.28]],IQ:[[33.31,44.36]],IR:[[35.69,51.39]],TR:[[39.93,32.86],[41.01,28.98],[38.42,27.14]],FR:[[48.86,2.35],[43.30,5.37],[43.60,1.44]],ES:[[40.42,-3.70],[37.39,-5.98],[41.39,2.17]],PT:[[38.72,-9.14]],IT:[[41.90,12.50],[45.46,9.19],[38.12,13.36]],GR:[[37.98,23.73]],MT:[[35.90,14.51]],DE:[[52.52,13.40],[48.14,11.58]],GB:[[51.51,-0.13]],BE:[[50.85,4.35]],NL:[[52.37,4.90]],CH:[[46.20,6.14]],CA:[[45.50,-73.57],[49.28,-123.12],[43.65,-79.38]],US:[[40.71,-74.01],[34.05,-118.24],[41.88,-87.63]],MX:[[19.43,-99.13]],BR:[[-23.55,-46.63],[-15.79,-47.88]],AR:[[-34.60,-58.38]],CL:[[-33.45,-70.67]],SN:[[14.72,-17.47]],CI:[[5.36,-4.01]],GH:[[5.60,-0.19]],NG:[[6.52,3.38],[12.00,8.52]],CM:[[4.05,9.77]],ET:[[9.03,38.74]],KE:[[-1.29,36.82]],TZ:[[-6.79,39.21]],ZA:[[-26.20,28.05],[-33.92,18.42]],IN:[[28.61,77.21],[19.08,72.88],[13.08,80.27]],PK:[[24.86,67.01],[31.55,74.34]],BD:[[23.81,90.41]],ID:[[-6.21,106.85]],MY:[[3.14,101.69]],TH:[[13.76,100.50]],VN:[[21.03,105.85]],PH:[[14.60,120.98]],CN:[[39.90,116.41],[31.23,121.47],[30.57,104.07]],JP:[[35.68,139.65],[34.69,135.50]],KR:[[37.57,126.98]],AU:[[-33.87,151.21],[-31.95,115.86],[-23.70,133.88]]};
+let d14=null,tr=null;
+const wmo=c=>c==null?null:c===0?"☀️":c===1?"🌤️":c===2?"⛅":c===3?"☁️":c<=48?"🌫️":c<=57?"🌦️":c<=67?"🌧️":c<=77?"❄️":c<=82?"🌦️":"⛈️";
+async function load14(){
+ d14=null;
+ try{d14=(await cf(`https://api.open-meteo.com/v1/forecast?latitude=${place.lat}&longitude=${place.lon}&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max,weather_code&models=ecmwf_ifs025,gfs_seamless&timezone=auto&forecast_days=14`,60*60*1000)).daily}catch(e){}
+ draw14();
+}
+function draw14(){
+ if(!d14||!d14.time){$("d14").innerHTML='<p class="mute">'+t("d14_no")+'</p>';return}
+ const M=["ecmwf_ifs025","gfs_seamless"],g=(v,i)=>M.map(m=>d14[v+"_"+m]&&d14[v+"_"+m][i]).filter(x=>x!=null);
+ let h="<tr><th>"+t("th_day")+"</th><th></th><th>"+t("th_mm")+"</th><th>☔</th><th>💨</th><th></th></tr>";
+ d14.time.forEach((d,i)=>{
+  const hi=g("temperature_2m_max",i),lo=g("temperature_2m_min",i),p=g("precipitation_sum",i),w=g("wind_speed_10m_max",i),c=g("weather_code",i);
+  if(!hi.length)return;
+  const sp=hi.length>1?mx(hi)-mi(hi):null,pm=p.length?av(p):0,dot=sp==null?"⚪":sp<=2?"🟢":sp<=4?"🟠":"🔴";
+  const ic=(c.length&&wmo(c[0]))||(pm>=5?"🌧️":pm>=1?"🌦️":"⛅");
+  h+=`<tr><td>${new Date(d).toLocaleDateString(LC(),{weekday:"short",day:"numeric",month:"short"})}</td><td>${ic}</td><td dir="ltr">${Math.round(av(hi))}° / ${lo.length?Math.round(av(lo)):"–"}°</td><td>${pm.toFixed(1)}</td><td>${w.length?Math.round(av(w)):"–"}</td><td>${dot}</td></tr>`});
+ $("d14").innerHTML="<table>"+h+"</table>";
+}
+function ctryName(c){try{return new Intl.DisplayNames([LG],{type:"region"}).of(c)}catch(e){return c}}
+function drawCtry(){const s=$("ctry"),cur=s.value||ld("mt_ctry")||"TN";
+ s.innerHTML=Object.keys(CTRY).map(c=>[c,ctryName(c)]).sort((a,b)=>a[1].localeCompare(b[1],LG)).map(x=>`<option value="${x[0]}">${esc(x[1])}</option>`).join("");s.value=CTRY[cur]?cur:"TN"}
+async function loadTr(){
+ const c=$("ctry").value||"TN",P=CTRY[c];sv("mt_ctry",c);tr=null;
+ try{const d=await cf(`https://seasonal-api.open-meteo.com/v1/seasonal?latitude=${P.map(p=>p[0])}&longitude=${P.map(p=>p[1])}&monthly=temperature_2m_anomaly,precipitation_anomaly,precipitation_mean`,6*3600*1000);tr=Array.isArray(d)?d:[d]}catch(e){}
+ drawTr();
+}
+function drawTr(){
+ const T=$("trend");
+ if(!tr||!tr[0]||!tr[0].monthly||!tr[0].monthly.time){T.innerHTML='<p class="mute">'+t("tr_no")+'</p>';return}
+ const mo=tr[0].monthly.time,U=tr[0].monthly_units||{},n=new Date();let y=n.getFullYear(),m=n.getMonth()+2;if(m>12){m=1;y++}
+ const nx=y+"-"+String(m).padStart(2,"0"),A=(v,i)=>{const a=tr.map(p=>p.monthly&&p.monthly[v]&&p.monthly[v][i]).filter(x=>x!=null&&isFinite(x));return a.length?av(a):null};
+ const idx=mo.map((_,i)=>i).filter(i=>mo[i].slice(0,7)>=nx).slice(0,3),rows=[];
+ idx.forEach(i=>{const ta=A("temperature_2m_anomaly",i),pa=A("precipitation_anomaly",i),pm=A("precipitation_mean",i);if(ta==null&&pa==null)return;
+  const rel=pa==null?0:pa/Math.max(Math.abs(pm||0),0.05);rows.push({d:mo[i],ta,pa,tl:ta==null?"–":ta>=.5?"tr_warm":ta<=-.5?"tr_cool":"tr_norm",pl:pa==null?"–":rel>=.15?"tr_wet":rel<=-.15?"tr_dry":"tr_norm"})});
+ if(!rows.length){T.innerHTML='<p class="mute">'+t("tr_no")+'</p>';return}
+ const ts=rows.filter(r=>r.ta!=null).map(r=>r.ta),tm=ts.length?av(ts):0,wet=rows.filter(r=>r.pl==="tr_wet").length,dry=rows.filter(r=>r.pl==="tr_dry").length;
+ const sm=t("tr_sum",t(tm>=.5?"tr_warm":tm<=-.5?"tr_cool":"tr_norm"),t(wet>dry?"tr_wet":dry>wet?"tr_dry":"tr_norm"));
+ T.innerHTML='<p><b>'+esc(ctryName($("ctry").value))+'</b> · '+sm+'</p><div class="tr3">'+rows.map(r=>`<div class="tm"><small>${new Date(r.d).toLocaleDateString(LC(),{month:"long",year:"numeric"})}</small><b class="${r.ta>=.5?"hot":r.ta<=-.5?"cold":""}">${r.ta==null?"–":(r.ta>0?"+":"")+r.ta.toFixed(1)+"°"}</b><div>${r.tl==="–"?"–":t(r.tl)}</div><div class="mute">☔ ${r.pl==="–"?"–":t(r.pl)}${r.pa==null?"":" ("+(r.pa>0?"+":"")+r.pa.toFixed(2)+" "+esc(U.precipitation_anomaly||"")+")"}</div></div>`).join("")+"</div>";
+}
+$("ctry").onchange=()=>loadTr();
 function sky(){
  const i=idxNow(),T=data.hourly.time[i],h=+T.slice(11,13),night=h<6||h>=19,x=dayInfo(T.slice(0,10));
  let k=x.p>=1?"rain":x.c>70?"cloud":x.c>40?"pcloud":"clear";if(night&&k!=="rain")k="night";
- document.body.dataset.sky=k;$("hicon").textContent=k==="night"?"🌙":x.ic[0];$("hcond").textContent=t(x.ic[1]);
+ document.body.dataset.sky=k;chips();$("hicon").textContent=k==="night"?"🌙":x.ic[0];$("hcond").textContent=t(x.ic[1]);
  if(fxk!==k){fxk=k;let f="";
   if(k==="rain")for(let j=0;j<26;j++)f+=`<i style="left:${j*4+Math.random()*3}%;animation-delay:${(Math.random()*1.2).toFixed(2)}s;animation-duration:${(.7+Math.random()*.5).toFixed(2)}s"></i>`;
   if(k==="night")for(let j=0;j<30;j++)f+=`<s style="left:${Math.random()*100}%;top:${Math.random()*100}%;animation-delay:${(Math.random()*3).toFixed(1)}s"></s>`;
@@ -272,7 +372,15 @@ function sky(){
   $("fx").innerHTML=f}
 }
 let sel=new Set(["ecmwf_ifs025","gfs_seamless","icon_seamless","meteofrance_seamless","ukmo_seamless"]);
-let place=ld("mt_place")||{name:"Tunis",lat:36.80,lon:10.18},tab="temperature_2m",data=null;
+const esc=x=>String(x).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+async function cf(u,ttl){const k="mt_c:"+u,n=Date.now();
+ try{const c=ld(k);if(c&&n-c.t<ttl)return c.d}catch(e){}
+ const r=await fetch(u);if(!r.ok)throw new Error(r.status);const d=await r.json();
+ try{let ix=ld("mt_ci")||[];ix=ix.filter(x=>x!==k);ix.push(k);while(ix.length>6)localStorage.removeItem(ix.shift());sv("mt_ci",ix);sv(k,{t:n,d})}catch(e){}
+ return d}
+const QP=new URLSearchParams(location.search),qla=+QP.get("lat"),qlo=+QP.get("lon");
+const QPL=QP.get("lat")&&QP.get("lon")&&isFinite(qla)&&isFinite(qlo)&&Math.abs(qla)<=90&&Math.abs(qlo)<=180?{name:(QP.get("n")||"").slice(0,60)||qla.toFixed(2)+", "+qlo.toFixed(2),lat:qla,lon:qlo}:null;
+let place=QPL||window.PRESET||ld("mt_place")||{name:"Tunis",lat:36.80,lon:10.18},tab="temperature_2m",data=null;
 
 function key(v,m){return sel.size>1?v+"_"+m:v}
 async function load(){
@@ -281,9 +389,7 @@ async function load(){
  if(!ms.length){$("status").innerHTML='<div class="status">'+t("st_none")+'</div>';return}
  const p=new URLSearchParams({latitude:place.lat,longitude:place.lon,hourly:"temperature_2m,precipitation,wind_speed_10m,wind_gusts_10m,wind_direction_10m,cloud_cover",models:ms.join(","),timezone:"auto",forecast_days:7});
  try{
-  const r=await fetch("https://api.open-meteo.com/v1/forecast?"+p);
-  if(!r.ok)throw new Error(r.status);
-  data=await r.json();sv("mt_last",{k:place.name+"|"+sel.size,data});
+  data=await cf("https://api.open-meteo.com/v1/forecast?"+p,15*60*1000);sv("mt_last",{k:place.name+"|"+sel.size,data});
  }catch(e){
   const c=ld("mt_last");
   if(c&&c.k===place.name+"|"+sel.size){data=c.data;render();$("status").innerHTML='<div class="status">'+t("st_off")+'</div>';return}
@@ -291,7 +397,7 @@ async function load(){
   $("status").innerHTML='<div class="status">'+t("st_err")+'</div>';
   return;
  }
- render();sea();agri();
+ render();sea();agri();load14();
 }
 function idxNow(){const t=data.hourly.time,off=data.utc_offset_seconds||0;
  const i=Math.floor((Date.now()+off*1000-Date.parse(t[0]+"Z"))/36e5);return Math.max(0,Math.min(t.length-1,i))}
@@ -339,10 +445,9 @@ function table(){
 let waves={};
 async function sea(){
  waves={};seaV=null;mar=null;
- try{const r=await fetch(`https://marine-api.open-meteo.com/v1/marine?latitude=${place.lat}&longitude=${place.lon}&hourly=sea_surface_temperature,wave_height&forecast_days=7&timezone=auto`);
-  const d=await r.json(),h=d.hourly;if(!h)return;
+ try{const d=await cf(`https://marine-api.open-meteo.com/v1/marine?latitude=${place.lat}&longitude=${place.lon}&hourly=sea_surface_temperature,wave_height&forecast_days=7&timezone=auto`,30*60*1000),h=d.hourly;if(!h)return;
   const v=h.sea_surface_temperature.find(x=>x!=null);
-  if(v!=null){seaV=Math.round(v);$("sub").textContent+=t("sub_s",seaV)}
+  if(v!=null){seaV=Math.round(v);$("sub").textContent+=t("sub_s",seaV);chips()}
   h.time.forEach((t,i)=>{const w=h.wave_height[i];if(w!=null){const k=t.slice(0,10);waves[k]=Math.max(waves[k]||0,w)}});
   const m={};h.time.forEach((tt,i)=>{const k=tt.slice(0,10),o=(m[k]=m[k]||{s:[],w:[]});if(h.sea_surface_temperature[i]!=null)o.s.push(h.sea_surface_temperature[i]);if(h.wave_height[i]!=null)o.w.push(h.wave_height[i])});
   mar={};Object.keys(m).forEach(k=>{if(m[k].s.length&&m[k].w.length)mar[k]={sst:av(m[k].s),wh:mx(m[k].w)}});seaTable();
@@ -379,7 +484,7 @@ function pick(name,lat,lon){place={name,lat,lon};sv("mt_place",place);load();dra
 function isFav(){return favs().some(f=>f.name===place.name&&f.lat===place.lat)}
 function drawFavs(){
  $("star").textContent=isFav()?t("fav_d"):t("fav_a");
- $("favs").innerHTML=favs().map((f,i)=>`<button data-i="${i}" aria-pressed="${f.name===place.name&&f.lat===place.lat}">${f.name}</button>`).join("");
+ $("favs").innerHTML=favs().map((f,i)=>`<button data-i="${i}" aria-pressed="${f.name===place.name&&f.lat===place.lat}">${esc(f.name)}</button>`).join("");
 }
 $("favs").onclick=e=>{const f=favs()[e.target.dataset.i];if(f)pick(f.name,f.lat,f.lon)};
 $("star").onclick=()=>{let l=favs();l=isFav()?l.filter(f=>!(f.name===place.name&&f.lat===place.lat)):[...l,place];sv("mt_favs",l);drawFavs()};
@@ -419,8 +524,8 @@ function drawTabs(){$("tabs").innerHTML=Object.entries(VARS).map(([k,v])=>`<butt
 $("tabs").onclick=e=>{const k=e.target.dataset.k;if(!k)return;tab=k;
  [...$("tabs").children].forEach(b=>b.setAttribute("aria-pressed",b.dataset.k===k));if(data)chart()};
 $("go").onclick=async()=>{const q=$("q").value.trim();if(!q)return;
- try{const r=await fetch("https://geocoding-api.open-meteo.com/v1/search?count=6&language="+L+"&name="+encodeURIComponent(q));
-  const d=await r.json();$("hits").innerHTML=(d.results||[]).map((x,i)=>`<button data-i="${i}">${x.name}, ${x.country||""}</button>`).join("")||'<span class="mute">'+t("nores")+'</span>';
+ try{const r=await fetch("https://geocoding-api.open-meteo.com/v1/search?count=6&language="+LG+"&name="+encodeURIComponent(q));
+  const d=await r.json();$("hits").innerHTML=(d.results||[]).map((x,i)=>`<button data-i="${i}">${esc(x.name)}, ${esc(x.country||"")}</button>`).join("")||'<span class="mute">'+t("nores")+'</span>';
   $("hits").onclick=e=>{const x=d.results[e.target.dataset.i];if(x){pick(x.name,x.latitude,x.longitude);$("hits").innerHTML=""}};
  }catch(e){$("hits").innerHTML='<span class="mute">'+t("serr")+'</span>'}};
 $("q").onkeydown=e=>{if(e.key==="Enter")$("go").click()};
@@ -472,7 +577,7 @@ async function radar(){
  }catch(e){$("mnote").textContent=t("mn_re")}
 }
 if("serviceWorker" in navigator)addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
-setLang(L);load();
+setLang(LG);load();loadTr();
 </script>
 </body>
 </html>

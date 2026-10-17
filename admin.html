@@ -1,0 +1,122 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="referrer" content="no-referrer"><title>Espace administrateur | Météo Tunisie</title><meta name="robots" content="noindex,nofollow"><style>:root{--h1:rgba(6,58,108,.55);--h2:rgba(6,58,108,.22);--top:rgba(8,40,72,.4);--dr1:#14507f;--dr2:#0c2f55;--ink:#0e2a3b;--mute:#58717f;--card:rgba(255,255,255,.88);--line:rgba(14,42,59,.12);--acc:#0b7bd0;--acc2:#12c2a8;--warn:#d9480f;--s1:#2d8fe3;--s2:#bfe5fa;--sh:0 10px 28px rgba(8,50,95,.18)}
+html[data-theme=dark],body[data-sky=night]{--ink:#e8f2fa;--mute:#9db6c8;--card:rgba(13,31,50,.84);--line:rgba(255,255,255,.14);--sh:0 10px 28px rgba(0,0,0,.4)}
+body[data-sky=pcloud]{--s1:#4f9de0;--s2:#d3e8f6}body[data-sky=cloud]{--s1:#667d93;--s2:#c9d4de}body[data-sky=rain]{--s1:#42586d;--s2:#9fb2c3}body[data-sky=night]{--s1:#091428;--s2:#1c4a7a}
+html[data-theme=dark] body{--s1:#091428;--s2:#16385f}
+html[data-th=ocean] body{--ink:#06303f;--mute:#4b6f7d;--card:rgba(255,255,255,.9);--line:rgba(6,48,63,.12);--acc:#0096c7;--acc2:#2ec4b6;--s1:#00708f;--s2:#8fe0d6;--h1:rgba(0,70,95,.6);--h2:rgba(0,90,110,.25);--top:rgba(0,60,80,.45);--dr1:#0b6a88;--dr2:#06384c}
+html[data-th=sahara] body{--ink:#3a1c0a;--mute:#7a5a45;--card:rgba(255,250,243,.92);--line:rgba(90,40,10,.14);--acc:#d9480f;--acc2:#f2a516;--s1:#d9772b;--s2:#f8e0b5;--h1:rgba(120,45,10,.62);--h2:rgba(150,70,15,.28);--top:rgba(100,40,8,.45);--dr1:#8a3a10;--dr2:#4a1f08}
+html[data-th=night] body{--ink:#ece9ff;--mute:#a9a5d0;--card:rgba(22,19,56,.86);--line:rgba(255,255,255,.14);--acc:#8b7bff;--acc2:#35d0ff;--s1:#0a0f2c;--s2:#2b1b63;--h1:rgba(70,55,190,.5);--h2:rgba(40,30,120,.25);--top:rgba(10,8,40,.5);--dr1:#1d1850;--dr2:#0d0b2a}
+
+*{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--ink);background:linear-gradient(180deg,var(--s1),var(--s2)) fixed;font:16px/1.5 system-ui,"Segoe UI","Noto Sans Arabic",sans-serif}
+.wrap{max-width:900px;margin:0 auto;padding:14px}.top{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 14px;background:var(--top);backdrop-filter:blur(14px);color:#fff}.top a{color:#fff;text-decoration:none;font-weight:700}
+h1{font-size:1.5rem;margin:.3em 0;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.3)}h2{font-size:1.1rem;margin:.2em 0 .6em}a{color:var(--acc)}
+.card{background:var(--card);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:20px;padding:16px;margin:14px 0;box-shadow:var(--sh)}
+button,input,select,textarea{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 12px;max-width:100%}
+textarea{width:100%;min-height:70px}input,select{width:100%}input[type=checkbox]{width:auto}
+button{cursor:pointer;border-radius:999px;width:auto}button.pri,button[aria-pressed=true]{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;border-color:transparent}button.dng{color:#d9480f}
+label{display:block;margin:10px 0 4px;font-size:.9rem;color:var(--mute)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.ok{color:#1b9e77}.err{color:#d9480f}.mute{color:var(--mute);font-size:.85rem}.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+table{width:100%;border-collapse:collapse;font-size:.9rem}td,th{padding:6px;border-bottom:1px solid var(--line);text-align:start;vertical-align:top}.scroll{overflow-x:auto}
+.plan{border:1px solid var(--line);border-radius:18px;padding:14px;background:var(--card);display:flex;flex-direction:column;gap:6px}.price{font-size:1.5rem;font-weight:800}
+.btn{display:inline-block;padding:9px 16px;border-radius:999px;text-decoration:none;border:1px solid var(--line)}.btn.pri{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;border-color:transparent}
+.lg{display:flex;gap:4px}.lg button{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.4);padding:4px 10px}.lg button[aria-pressed=true]{background:#fff;color:#0b4f86}
+ul.f{margin:4px 0;padding-inline-start:18px}.hp{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);opacity:0;pointer-events:none}.badge{padding:2px 8px;border-radius:999px;font-size:.75rem;border:1px solid var(--line)}</style><script>(function(){var th;try{th=JSON.parse(localStorage.getItem("mt_theme"))}catch(e){}if(["sky","ocean","sahara","night"].indexOf(th)<0)th="sky";var h=document.documentElement;h.dataset.th=th;h.dataset.theme=th==="night"?"dark":"light"})()</script></head><body>
+<header class="top"><a href="./">← Météo Tunisie</a><span id="who" class="mute" style="color:#fff"></span><button id="out" hidden>Déconnexion</button></header>
+<div class="wrap"><h1>Espace administrateur</h1>
+<div id="setup" class="card" hidden><h2>Configuration requise</h2><p>Cet espace n'est pas encore relié à sa base de données. Suivez le guide GUIDE-ADMIN, puis remplissez le fichier <b>config.js</b>.</p></div>
+<div id="login" class="card" hidden><h2 id="lt">Connexion</h2>
+<form id="lf" novalidate><label for="em">Adresse e-mail</label><input id="em" type="email" autocomplete="username" required><label for="pw">Mot de passe</label><input id="pw" type="password" autocomplete="current-password" required>
+<p><button class="pri" type="submit" id="lgo">Se connecter</button> <button type="button" id="su">Créer mon compte</button> <button type="button" id="fg">Mot de passe oublié</button></p><p id="lm"></p></form>
+<p class="mute">Seules les adresses ajoutées par l'administrateur principal obtiennent l'accès. Mot de passe : 12 caractères minimum.</p></div>
+<div id="denied" class="card" hidden><h2>Accès refusé</h2><p>Ce compte n'est pas autorisé. Demandez à l'administrateur principal de vous ajouter comme collaborateur avec cette adresse e-mail.</p><button id="out2">Se déconnecter</button></div>
+<div id="panel" hidden>
+<div class="tabs" id="tabs"><button data-tab="offers" aria-pressed="true">Offres</button><button data-tab="req" aria-pressed="false">Demandes <span id="nreq"></span></button><button data-tab="staff" id="tab-staff" aria-pressed="false" hidden>Collaborateurs</button><button data-tab="acc" aria-pressed="false">Mon compte</button></div>
+<section class="card" id="p-offers"><h2>Offres, abonnements et services</h2>
+<form id="of" novalidate><input type="hidden" id="o_id">
+<div class="grid"><div><label for="o_cat">Catégorie</label><select id="o_cat"><option value="subscription">Abonnement</option><option value="service">Service</option><option value="api">API et données</option><option value="enterprise">Entreprise</option></select></div>
+<div><label for="o_per">Facturation</label><select id="o_per"><option value="month">Par mois</option><option value="year">Par an</option><option value="one_time">Paiement unique</option><option value="quote">Sur devis</option></select></div>
+<div><label for="o_price">Prix (laisser vide si sur devis)</label><input id="o_price" type="number" step="0.01" min="0"></div><div><label for="o_cur">Devise (3 lettres)</label><input id="o_cur" value="USD" maxlength="3"></div></div>
+<label for="o_url">Lien de paiement (https, fourni par votre prestataire de paiement)</label><input id="o_url" type="url" placeholder="https://...">
+<div class="grid"><div><label for="t_fr">Titre (français)</label><input id="t_fr" maxlength="120"><label for="d_fr">Description</label><textarea id="d_fr"></textarea><label for="f_fr">Points forts (un par ligne)</label><textarea id="f_fr"></textarea></div>
+<div><label for="t_en">Title (English)</label><input id="t_en" maxlength="120"><label for="d_en">Description</label><textarea id="d_en"></textarea><label for="f_en">Features (one per line)</label><textarea id="f_en"></textarea></div>
+<div dir="rtl"><label for="t_ar">العنوان (العربية)</label><input id="t_ar" maxlength="120"><label for="d_ar">الوصف</label><textarea id="d_ar"></textarea><label for="f_ar">المزايا (سطر لكل ميزة)</label><textarea id="f_ar"></textarea></div></div>
+<div class="grid"><div><label for="o_ord">Ordre d'affichage</label><input id="o_ord" type="number" value="0"></div><div><label><input type="checkbox" id="o_vis"> Visible sur le site public</label></div></div>
+<p><button class="pri" type="submit">Enregistrer l'offre</button> <button type="button" id="orst">Nouvelle offre</button> <span id="om"></span></p></form>
+<div class="scroll"><table id="ol"></table></div></section>
+<section class="card" id="p-req" hidden><h2>Demandes reçues</h2><div class="scroll"><table id="rl"></table></div></section>
+<section class="card" id="p-staff" hidden><h2>Collaborateurs</h2><p class="mute">Ajoutez l'adresse e-mail de la personne. Elle crée ensuite son compte sur cette page avec la même adresse et le mot de passe de son choix. Elle ne gagne l'accès qu'après avoir confirmé son e-mail.</p>
+<form id="sf" novalidate><div class="grid"><div><label for="s_em">Adresse e-mail du collaborateur</label><input id="s_em" type="email"></div><div><label for="s_role">Rôle</label><select id="s_role"><option value="collaborator">Collaborateur (offres et demandes)</option><option value="owner">Administrateur principal (tout, y compris les collaborateurs)</option></select></div></div>
+<p><button class="pri" type="submit">Ajouter</button> <span id="sm"></span></p></form><div class="scroll"><table id="sl"></table></div></section>
+<section class="card" id="p-acc" hidden><h2>Mon compte</h2><form id="pf" novalidate><label for="np">Nouveau mot de passe (12 caractères minimum)</label><input id="np" type="password" autocomplete="new-password"><p><button class="pri" type="submit">Changer le mot de passe</button> <span id="pm"></span></p></form></section>
+</div></div>
+<script src="config.js"></script>
+<script>
+const esc=x=>String(x==null?"":x).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));const $=id=>document.getElementById(id);function loadSb(){return new Promise((ok,ko)=>{if(window.supabase)return ok();const s=document.createElement("script");s.src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js";s.onload=ok;s.onerror=ko;document.head.appendChild(s)})}
+let sb=null,role=null,me=null,offers=[];
+const msg=(el,t,ok)=>{el.textContent=t;el.className=ok?"ok":"err"};
+const show=n=>{["login","denied","panel","setup"].forEach(x=>$(x).hidden=x!==n);$("out").hidden=n==="login"||n==="setup"};
+const fmt=d=>{try{return new Date(d).toLocaleString("fr")}catch(e){return d}};
+async function enter(session){
+ if(!session){$("who").textContent="";show("login");return}
+ me=session.user;const r=await sb.rpc("my_role");role=r.error?null:r.data;
+ if(!role){show("denied");return}
+ show("panel");$("who").textContent=me.email+" · "+(role==="owner"?"administrateur principal":"collaborateur");$("tab-staff").hidden=role!=="owner";
+ await Promise.all([loadOffers(),loadReq(),role==="owner"?loadStaff():null]);
+}
+async function boot(){
+ const C=window.MT_CONFIG||{};if(!C.SUPABASE_URL||!C.SUPABASE_ANON_KEY){show("setup");return}
+ try{await loadSb()}catch(e){show("setup");return}
+ sb=window.supabase.createClient(C.SUPABASE_URL,C.SUPABASE_ANON_KEY,{auth:{persistSession:true,autoRefreshToken:true}});
+ sb.auth.onAuthStateChange(ev=>{if(ev==="PASSWORD_RECOVERY")setTimeout(()=>{tab("acc")},300)});
+ const r=await sb.auth.getSession();await enter(r.data.session);
+}
+// ---- connexion
+$("lf").onsubmit=async e=>{e.preventDefault();const r=await sb.auth.signInWithPassword({email:$("em").value.trim(),password:$("pw").value});
+ if(r.error)return msg($("lm"),"Identifiants incorrects, ou adresse e-mail pas encore confirmée.");$("pw").value="";await enter(r.data.session)};
+$("su").onclick=async()=>{const email=$("em").value.trim(),pw=$("pw").value;
+ if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email))return msg($("lm"),"Saisissez votre adresse e-mail.");
+ if(pw.length<12)return msg($("lm"),"Choisissez un mot de passe d'au moins 12 caractères.");
+ const r=await sb.auth.signUp({email,password:pw,options:{emailRedirectTo:location.href.split("#")[0].split("?")[0]}});
+ if(r.error)return msg($("lm"),"Création impossible : "+r.error.message);msg($("lm"),"Compte créé. Ouvrez le message de confirmation reçu par e-mail, puis connectez-vous.",1)};
+$("fg").onclick=async()=>{const email=$("em").value.trim();if(!email)return msg($("lm"),"Saisissez d'abord votre adresse e-mail.");
+ await sb.auth.resetPasswordForEmail(email,{redirectTo:location.href.split("#")[0].split("?")[0]});msg($("lm"),"Si cette adresse a un compte, un lien de réinitialisation vient d'être envoyé.",1)};
+const logout=async()=>{await sb.auth.signOut();role=null;me=null;show("login")};$("out").onclick=logout;$("out2").onclick=logout;
+// ---- onglets
+function tab(n){["offers","req","staff","acc"].forEach(x=>{$("p-"+x).hidden=x!==n});[...$("tabs").children].forEach(b=>b.setAttribute("aria-pressed",b.dataset.tab===n))}
+$("tabs").onclick=e=>{const b=e.target.closest("[data-tab]");if(b)tab(b.dataset.tab)};
+// ---- offres
+const L3=["fr","en","ar"];
+async function loadOffers(){const r=await sb.from("offers").select("*").order("sort_order");offers=r.data||[];
+ $("ol").innerHTML="<tr><th>Offre</th><th>Prix</th><th>État</th><th></th></tr>"+offers.map(o=>`<tr><td><b>${esc(o.title&&o.title.fr)}</b><br><span class="mute">${esc(o.category)}</span></td><td>${o.period==="quote"||o.price==null?"Sur devis":esc(o.price)+" "+esc(o.currency||"")+" / "+esc(o.period)}</td><td><span class="badge">${o.visible?"visible":"masquée"}</span></td><td><button data-edit="${esc(o.id)}">Modifier</button> <button data-vis="${esc(o.id)}">${o.visible?"Masquer":"Afficher"}</button> <button class="dng" data-del="${esc(o.id)}">Supprimer</button></td></tr>`).join("")}
+function resetOffer(){$("of").reset();$("o_id").value="";$("o_cur").value="USD";$("o_ord").value="0"}
+$("orst").onclick=resetOffer;
+$("ol").onclick=async e=>{const b=e.target.closest("button");if(!b)return;
+ if(b.dataset.edit){const o=offers.find(x=>x.id===b.dataset.edit);if(!o)return;$("o_id").value=o.id;$("o_cat").value=o.category;$("o_per").value=o.period;$("o_price").value=o.price==null?"":o.price;$("o_cur").value=o.currency||"USD";$("o_url").value=o.payment_url||"";$("o_ord").value=o.sort_order||0;$("o_vis").checked=!!o.visible;
+  L3.forEach(l=>{$("t_"+l).value=(o.title&&o.title[l])||"";$("d_"+l).value=(o.description&&o.description[l])||"";$("f_"+l).value=((o.features&&o.features[l])||[]).join("\n")});$("of").scrollIntoView({behavior:"smooth"});return}
+ if(b.dataset.vis){const o=offers.find(x=>x.id===b.dataset.vis);await sb.from("offers").update({visible:!o.visible,updated_at:new Date().toISOString()}).eq("id",o.id);loadOffers();return}
+ if(b.dataset.del&&confirm("Supprimer définitivement cette offre ?")){await sb.from("offers").delete().eq("id",b.dataset.del);loadOffers()}};
+$("of").onsubmit=async e=>{e.preventDefault();const m=$("om"),title={},description={},features={};
+ L3.forEach(l=>{title[l]=$("t_"+l).value.trim();description[l]=$("d_"+l).value.trim();features[l]=$("f_"+l).value.split("\n").map(x=>x.trim()).filter(Boolean)});
+ if(!title.fr)return msg(m,"Le titre en français est obligatoire.");
+ const url=$("o_url").value.trim();if(url&&!/^https:\/\//i.test(url))return msg(m,"Le lien de paiement doit commencer par https://");
+ const price=$("o_price").value===""?null:Number($("o_price").value);if(price!=null&&(!isFinite(price)||price<0))return msg(m,"Prix invalide.");
+ if($("o_vis").checked&&price==null&&$("o_per").value!=="quote")return msg(m,"Indiquez un prix, ou choisissez « Sur devis », avant de rendre l'offre visible.");
+ const row={title,description,features,category:$("o_cat").value,price,currency:($("o_cur").value||"USD").toUpperCase().slice(0,3),period:$("o_per").value,payment_url:url||null,sort_order:parseInt($("o_ord").value||"0",10)||0,visible:$("o_vis").checked,updated_at:new Date().toISOString()};
+ const id=$("o_id").value,r=id?await sb.from("offers").update(row).eq("id",id):await sb.from("offers").insert(row);
+ if(r.error)return msg(m,"Erreur : "+r.error.message);msg(m,"Offre enregistrée.",1);resetOffer();loadOffers()};
+// ---- demandes
+async function loadReq(){const r=await sb.from("requests").select("*, offers(title)").order("created_at",{ascending:false}).limit(200);const l=r.data||[];$("nreq").textContent=l.filter(x=>x.status==="new").length?"("+l.filter(x=>x.status==="new").length+")":"";
+ $("rl").innerHTML="<tr><th>Date</th><th>De</th><th>Offre et message</th><th>État</th></tr>"+l.map(x=>`<tr><td>${esc(fmt(x.created_at))}</td><td>${esc(x.name)}<br><a href="mailto:${esc(x.email)}">${esc(x.email)}</a><br><span class="mute">${esc(x.country||"")}</span></td><td><b>${esc((x.offers&&x.offers.title&&x.offers.title.fr)||"Autre")}</b><br>${esc(x.message||"")}</td><td><select data-st="${esc(x.id)}"><option value="new"${x.status==="new"?" selected":""}>Nouvelle</option><option value="in_progress"${x.status==="in_progress"?" selected":""}>En cours</option><option value="done"${x.status==="done"?" selected":""}>Traitée</option></select>${role==="owner"?` <button class="dng" data-rdel="${esc(x.id)}">Supprimer</button>`:""}</td></tr>`).join("")}
+$("rl").onchange=async e=>{if(e.target.dataset.st){await sb.from("requests").update({status:e.target.value}).eq("id",e.target.dataset.st);loadReq()}};
+$("rl").onclick=async e=>{const b=e.target.closest("[data-rdel]");if(b&&confirm("Supprimer cette demande ?")){await sb.from("requests").delete().eq("id",b.dataset.rdel);loadReq()}};
+// ---- collaborateurs
+async function loadStaff(){const r=await sb.from("staff").select("*").order("created_at");const l=r.data||[];
+ $("sl").innerHTML="<tr><th>E-mail</th><th>Rôle</th><th>Ajouté par</th><th></th></tr>"+l.map(x=>`<tr><td>${esc(x.email)}</td><td>${x.role==="owner"?"Administrateur principal":"Collaborateur"}</td><td>${esc(x.created_by||"")}</td><td>${me&&x.email===me.email.toLowerCase()?'<span class="mute">vous</span>':`<button class="dng" data-sdel="${esc(x.email)}">Retirer</button>`}</td></tr>`).join("")}
+$("sf").onsubmit=async e=>{e.preventDefault();const email=$("s_em").value.trim().toLowerCase();if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email))return msg($("sm"),"Adresse e-mail invalide.");
+ const r=await sb.from("staff").insert({email,role:$("s_role").value,created_by:me.email});if(r.error)return msg($("sm"),"Ajout impossible : "+r.error.message);
+ msg($("sm"),"Ajouté. Cette personne peut maintenant créer son compte avec cette adresse.",1);$("s_em").value="";loadStaff()};
+$("sl").onclick=async e=>{const b=e.target.closest("[data-sdel]");if(b&&confirm("Retirer l'accès de "+b.dataset.sdel+" ?")){await sb.from("staff").delete().eq("email",b.dataset.sdel);loadStaff()}};
+// ---- compte
+$("pf").onsubmit=async e=>{e.preventDefault();const p=$("np").value;if(p.length<12)return msg($("pm"),"12 caractères minimum.");const r=await sb.auth.updateUser({password:p});
+ if(r.error)return msg($("pm"),"Changement impossible : "+r.error.message);$("np").value="";msg($("pm"),"Mot de passe modifié.",1)};
+boot();
+</script></body></html>

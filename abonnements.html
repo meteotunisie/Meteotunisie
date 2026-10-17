@@ -1,0 +1,78 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="referrer" content="no-referrer"><title>Abonnements et services | Météo Tunisie</title><style>:root{--h1:rgba(6,58,108,.55);--h2:rgba(6,58,108,.22);--top:rgba(8,40,72,.4);--dr1:#14507f;--dr2:#0c2f55;--ink:#0e2a3b;--mute:#58717f;--card:rgba(255,255,255,.88);--line:rgba(14,42,59,.12);--acc:#0b7bd0;--acc2:#12c2a8;--warn:#d9480f;--s1:#2d8fe3;--s2:#bfe5fa;--sh:0 10px 28px rgba(8,50,95,.18)}
+html[data-theme=dark],body[data-sky=night]{--ink:#e8f2fa;--mute:#9db6c8;--card:rgba(13,31,50,.84);--line:rgba(255,255,255,.14);--sh:0 10px 28px rgba(0,0,0,.4)}
+body[data-sky=pcloud]{--s1:#4f9de0;--s2:#d3e8f6}body[data-sky=cloud]{--s1:#667d93;--s2:#c9d4de}body[data-sky=rain]{--s1:#42586d;--s2:#9fb2c3}body[data-sky=night]{--s1:#091428;--s2:#1c4a7a}
+html[data-theme=dark] body{--s1:#091428;--s2:#16385f}
+html[data-th=ocean] body{--ink:#06303f;--mute:#4b6f7d;--card:rgba(255,255,255,.9);--line:rgba(6,48,63,.12);--acc:#0096c7;--acc2:#2ec4b6;--s1:#00708f;--s2:#8fe0d6;--h1:rgba(0,70,95,.6);--h2:rgba(0,90,110,.25);--top:rgba(0,60,80,.45);--dr1:#0b6a88;--dr2:#06384c}
+html[data-th=sahara] body{--ink:#3a1c0a;--mute:#7a5a45;--card:rgba(255,250,243,.92);--line:rgba(90,40,10,.14);--acc:#d9480f;--acc2:#f2a516;--s1:#d9772b;--s2:#f8e0b5;--h1:rgba(120,45,10,.62);--h2:rgba(150,70,15,.28);--top:rgba(100,40,8,.45);--dr1:#8a3a10;--dr2:#4a1f08}
+html[data-th=night] body{--ink:#ece9ff;--mute:#a9a5d0;--card:rgba(22,19,56,.86);--line:rgba(255,255,255,.14);--acc:#8b7bff;--acc2:#35d0ff;--s1:#0a0f2c;--s2:#2b1b63;--h1:rgba(70,55,190,.5);--h2:rgba(40,30,120,.25);--top:rgba(10,8,40,.5);--dr1:#1d1850;--dr2:#0d0b2a}
+
+*{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--ink);background:linear-gradient(180deg,var(--s1),var(--s2)) fixed;font:16px/1.5 system-ui,"Segoe UI","Noto Sans Arabic",sans-serif}
+.wrap{max-width:900px;margin:0 auto;padding:14px}.top{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 14px;background:var(--top);backdrop-filter:blur(14px);color:#fff}.top a{color:#fff;text-decoration:none;font-weight:700}
+h1{font-size:1.5rem;margin:.3em 0;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.3)}h2{font-size:1.1rem;margin:.2em 0 .6em}a{color:var(--acc)}
+.card{background:var(--card);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:20px;padding:16px;margin:14px 0;box-shadow:var(--sh)}
+button,input,select,textarea{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 12px;max-width:100%}
+textarea{width:100%;min-height:70px}input,select{width:100%}input[type=checkbox]{width:auto}
+button{cursor:pointer;border-radius:999px;width:auto}button.pri,button[aria-pressed=true]{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;border-color:transparent}button.dng{color:#d9480f}
+label{display:block;margin:10px 0 4px;font-size:.9rem;color:var(--mute)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.ok{color:#1b9e77}.err{color:#d9480f}.mute{color:var(--mute);font-size:.85rem}.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+table{width:100%;border-collapse:collapse;font-size:.9rem}td,th{padding:6px;border-bottom:1px solid var(--line);text-align:start;vertical-align:top}.scroll{overflow-x:auto}
+.plan{border:1px solid var(--line);border-radius:18px;padding:14px;background:var(--card);display:flex;flex-direction:column;gap:6px}.price{font-size:1.5rem;font-weight:800}
+.btn{display:inline-block;padding:9px 16px;border-radius:999px;text-decoration:none;border:1px solid var(--line)}.btn.pri{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;border-color:transparent}
+.lg{display:flex;gap:4px}.lg button{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.4);padding:4px 10px}.lg button[aria-pressed=true]{background:#fff;color:#0b4f86}
+ul.f{margin:4px 0;padding-inline-start:18px}.hp{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);opacity:0;pointer-events:none}.badge{padding:2px 8px;border-radius:999px;font-size:.75rem;border:1px solid var(--line)}</style><script>(function(){var th;try{th=JSON.parse(localStorage.getItem("mt_theme"))}catch(e){}if(["sky","ocean","sahara","night"].indexOf(th)<0)th="sky";var h=document.documentElement;h.dataset.th=th;h.dataset.theme=th==="night"?"dark":"light"})()</script></head><body>
+<header class="top"><a href="./">← <span data-x="back"></span></a><div class="lg"><button data-l="fr">FR</button><button data-l="ar">عربي</button><button data-l="en">EN</button></div></header>
+<div class="wrap"><h1 data-x="title"></h1><p style="color:#fff" data-x="sub"></p><div id="status"></div><div id="plans"></div>
+<div class="card" id="reqcard" hidden><h2 data-x="req_h"></h2>
+<form id="rf" novalidate><div class="grid"><div><label for="f_name" data-x="f_name"></label><input id="f_name" maxlength="120" autocomplete="name"></div><div><label for="f_email" data-x="f_email"></label><input id="f_email" type="email" maxlength="200" autocomplete="email"></div></div>
+<div class="grid"><div><label for="f_offer" data-x="f_offer"></label><select id="f_offer"></select></div><div><label for="f_country" data-x="f_country"></label><input id="f_country" maxlength="80"></div></div>
+<label for="f_msg" data-x="f_msg"></label><textarea id="f_msg" maxlength="2000"></textarea>
+<div class="hp" aria-hidden="true"><label>Website<input id="f_web" tabindex="-1" autocomplete="off"></label></div>
+<p class="mute" data-x="consent"></p><button class="pri" id="send" type="submit" data-x="send"></button> <span id="rm"></span></form></div>
+<p class="mute"><a href="confidentialite.html" data-x="priv"></a></p></div>
+<script src="config.js"></script>
+<script>
+const esc=x=>String(x==null?"":x).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));const $=id=>document.getElementById(id);function loadSb(){return new Promise((ok,ko)=>{if(window.supabase)return ok();const s=document.createElement("script");s.src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js";s.onload=ok;s.onerror=ko;document.head.appendChild(s)})}
+const S={back:["Météo Tunisie","Tunisia Weather","طقس تونس"],title:["Abonnements et services","Plans and services","الاشتراكات والخدمات"],
+sub:["Allez plus loin : alertes avancées, données, services sur mesure.","Go further: advanced alerts, data, custom services.","اذهب أبعد: تنبيهات متقدمة وبيانات وخدمات مخصصة."],
+soon:["Les offres seront bientôt disponibles.","Plans will be available soon.","ستتوفر العروض قريبا."],none:["Aucune offre disponible pour le moment. Vous pouvez nous écrire ci-dessous.","No plan available right now. You can write to us below.","لا توجد عروض حاليا. يمكنك مراسلتنا أدناه."],
+cat_subscription:["Abonnements","Subscriptions","الاشتراكات"],cat_service:["Services","Services","الخدمات"],cat_api:["API et données","API and data","واجهة البرمجة والبيانات"],cat_enterprise:["Entreprises","Business","الشركات"],
+choose:["Choisir cette offre","Choose this plan","اختيار هذا العرض"],ask:["Faire une demande","Make a request","تقديم طلب"],month:["/ mois","/ month","/ شهر"],year:["/ an","/ year","/ سنة"],one_time:["paiement unique","one-time payment","دفعة واحدة"],quote:["Sur devis","Custom quote","حسب الطلب"],
+req_h:["Demande d'abonnement ou de service","Plan or service request","طلب اشتراك أو خدمة"],f_name:["Nom","Name","الاسم"],f_email:["Adresse e-mail","E-mail address","البريد الإلكتروني"],f_offer:["Offre concernée","Plan concerned","العرض المعني"],f_other:["Autre demande","Other request","طلب آخر"],f_country:["Pays (facultatif)","Country (optional)","البلد (اختياري)"],f_msg:["Message","Message","الرسالة"],
+consent:["En envoyant ce formulaire, vous acceptez que ces informations servent à répondre à votre demande (voir Confidentialité).","By sending this form you agree that this information is used to answer your request (see Privacy).","بإرسال هذا النموذج توافق على استخدام هذه المعلومات للرد على طلبك (انظر الخصوصية)."],
+send:["Envoyer","Send","إرسال"],sent:["Merci, votre demande est envoyée.","Thank you, your request has been sent.","شكرا، تم إرسال طلبك."],err:["Envoi impossible pour le moment.","Could not send right now.","تعذر الإرسال حاليا."],invalid:["Vérifiez le nom, l'e-mail et le message.","Check name, e-mail and message.","تحقق من الاسم والبريد والرسالة."],priv:["Confidentialité et sources","Privacy and sources","الخصوصية والمصادر"]};
+const rd=k=>{try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}};
+let LG=rd("mt_lang");if(!S.back[["fr","en","ar"].indexOf(LG)])LG="fr";
+const LI=()=>({fr:0,en:1,ar:2})[LG],LC=()=>LG==="ar"?"ar-TN-u-nu-latn":LG,t=k=>(S[k]||[k,k,k])[LI()];
+let sb=null,offers=[];
+function ok(u){return typeof u==="string"&&/^https:\/\//i.test(u)}
+function price(o){if(o.period==="quote"||o.price==null)return t("quote");let p;try{p=new Intl.NumberFormat(LC(),{style:"currency",currency:o.currency||"USD"}).format(o.price)}catch(e){p=o.price+" "+esc(o.currency||"")}return p+" <small>"+(o.period==="one_time"?t("one_time"):t(o.period==="year"?"year":"month"))+"</small>"}
+const L10=(j)=>j&&typeof j==="object"?(j[LG]||j.fr||""):"";
+function draw(){
+ document.documentElement.lang=LG;document.documentElement.dir=LG==="ar"?"rtl":"ltr";document.title=t("title")+" | Météo Tunisie";
+ document.querySelectorAll("[data-x]").forEach(e=>e.textContent=t(e.dataset.x));
+ document.querySelectorAll("[data-l]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.l===LG));
+ const cats=["subscription","service","api","enterprise"];let h="";
+ cats.forEach(c=>{const l=offers.filter(o=>o.category===c);if(!l.length)return;
+  h+="<h2 style=\"color:#fff\">"+esc(t("cat_"+c))+"</h2><div class=\"grid\">"+l.map(o=>{const f=(o.features&&o.features[LG])||(o.features&&o.features.fr)||[];
+   return `<div class="plan"><b>${esc(L10(o.title))}</b><div class="price">${price(o)}</div><div>${esc(L10(o.description))}</div>${f.length?'<ul class="f">'+f.map(x=>"<li>"+esc(x)+"</li>").join("")+"</ul>":""}
+   ${ok(o.payment_url)?`<a class="btn pri" href="${esc(o.payment_url)}" target="_blank" rel="noopener noreferrer">${esc(t("choose"))}</a>`:""}<button data-ask="${esc(o.id)}">${esc(t("ask"))}</button></div>`}).join("")+"</div>"});
+ $("plans").innerHTML=h||(sb?'<div class="card">'+esc(t("none"))+"</div>":"");
+ const sel=$("f_offer"),cur=sel.value;sel.innerHTML='<option value="">'+esc(t("f_other"))+"</option>"+offers.map(o=>`<option value="${esc(o.id)}">${esc(L10(o.title))}</option>`).join("");sel.value=cur;
+}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-l]");if(b){LG=b.dataset.l;try{localStorage.setItem("mt_lang",JSON.stringify(LG))}catch(x){}draw();return}
+ const a=e.target.closest("[data-ask]");if(a){$("f_offer").value=a.dataset.ask;$("reqcard").scrollIntoView({behavior:"smooth"});$("f_name").focus()}});
+let last=0;
+$("rf").onsubmit=async e=>{e.preventDefault();const m=$("rm");m.className="";m.textContent="";
+ if($("f_web").value){m.className="ok";m.textContent=t("sent");return}
+ const name=$("f_name").value.trim(),email=$("f_email").value.trim(),msg=$("f_msg").value.trim();
+ if(!name||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)||msg.length<5){m.className="err";m.textContent=t("invalid");return}
+ if(Date.now()-last<8000)return;last=Date.now();
+ const r=await sb.from("requests").insert({name,email,offer_id:$("f_offer").value||null,country:$("f_country").value.trim()||null,message:msg});
+ if(r.error){m.className="err";m.textContent=t("err");return}
+ m.className="ok";m.textContent=t("sent");$("f_msg").value=""};
+(async()=>{const C=window.MT_CONFIG||{};draw();
+ if(!C.SUPABASE_URL||!C.SUPABASE_ANON_KEY){$("status").innerHTML='<div class="card">'+esc(t("soon"))+"</div>";return}
+ try{await loadSb();sb=window.supabase.createClient(C.SUPABASE_URL,C.SUPABASE_ANON_KEY);
+  const r=await sb.from("offers").select("*").eq("visible",true).order("sort_order");offers=r.data||[];$("reqcard").hidden=false}catch(e){$("status").innerHTML='<div class="card">'+esc(t("err"))+"</div>"}
+ draw()})();
+</script></body></html>
