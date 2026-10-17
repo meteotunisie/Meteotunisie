@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Météo Bruxelles : prévisions 7 jours, alertes et carte | Météo Tunisie</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0b6fa4">
+<meta name="description" content="Prévisions météo à Bruxelles (Belgique) sur 7 jours : température, pluie, vent, mer et alertes, comparées entre ECMWF, GFS, ICON et Météo-France."><link rel="canonical" href="https://meteotunisie.github.io/Meteotunisie/meteo-bruxelles.html">
+<meta property="og:type" content="website"><meta property="og:title" content="Météo Bruxelles : prévisions 7 jours, alertes et carte | Météo Tunisie"><meta property="og:description" content="Prévisions météo à Bruxelles (Belgique) sur 7 jours : température, pluie, vent, mer et alertes, comparées entre ECMWF, GFS, ICON et Météo-France."><meta property="og:url" content="https://meteotunisie.github.io/Meteotunisie/meteo-bruxelles.html"><meta property="og:image" content="https://meteotunisie.github.io/Meteotunisie/icon-512.png"><meta name="twitter:card" content="summary">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Météo Tunisie","applicationCategory":"WeatherApplication","operatingSystem":"Web, Android","inLanguage":["fr","ar","en"],"url":"https://meteotunisie.github.io/Meteotunisie/","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<script>window.PRESET={"name": "Bruxelles", "lat": 50.8503, "lon": 4.3517}</script>
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="top"><button id="menu" class="ic" aria-label="Menu" aria-expanded="false">☰</button>
+<div class="brand"><span class="logo">⛅</span><h1 data-x="app"></h1></div>
+<div class="lg"><button data-l="fr">FR</button><button data-l="ar">عربي</button><button data-l="en">EN</button></div></header>
+<div id="ov" hidden></div>
+<aside id="drawer" aria-hidden="true">
+ <div class="dh"><span>⛅ <span data-x="app"></span></span><button id="dx" aria-label="Close">✕</button></div>
+ <nav id="dnav">
+  <a href="#s-days" class="on"><i>🏠</i><span data-x="n_7"></span></a>
+  <a href="#s-14"><i>📅</i><span data-x="n_14"></span></a>
+  <a href="#s-tr3"><i>📈</i><span data-x="n_trend"></span></a>
+  <a href="#s-today"><i>🕐</i><span data-x="n_today"></span></a>
+  <a href="#s-map"><i>🗺️</i><span data-x="map_h"></span></a>
+  <a href="#s-alerts"><i>⚠️</i><span data-x="a_h"></span></a>
+  <a href="#s-centres"><i>📊</i><span data-x="c_h"></span></a>
+  <hr>
+  <a href="#s-sea"><i>🌊</i><span data-x="n_sea"></span></a>
+  <a href="#s-agri"><i>🌾</i><span data-x="n_agri"></span></a>
+  <hr>
+  <a href="abonnements.html"><i>💳</i><span data-x="plans"></span></a>
+ </nav>
+ <hr>
+ <h3 data-x="m_lang"></h3><div class="seg"><button data-l="fr">Français</button><button data-l="ar">العربية</button><button data-l="en">English</button></div>
+ <h3 data-x="m_theme"></h3><div class="seg" id="thm">
+  <button data-t="sky"><i class="sw" style="background:linear-gradient(135deg,#2d8fe3,#bfe5fa)"></i><span data-x="th_sky"></span></button>
+  <button data-t="ocean"><i class="sw" style="background:linear-gradient(135deg,#00708f,#8fe0d6)"></i><span data-x="th_ocean"></span></button>
+  <button data-t="sahara"><i class="sw" style="background:linear-gradient(135deg,#d9772b,#f8e0b5)"></i><span data-x="th_sahara"></span></button>
+  <button data-t="night"><i class="sw" style="background:linear-gradient(135deg,#0a0f2c,#2b1b63)"></i><span data-x="th_night"></span></button>
+  <button data-t="midnight"><i class="sw" style="background:linear-gradient(135deg,#030816,#0b2a5b)"></i><span data-x="th_midnight"></span></button>
+  <button data-t="navy"><i class="sw" style="background:linear-gradient(135deg,#0a2540,#1d4e89)"></i><span data-x="th_navy"></span></button>
+  <button data-t="azure"><i class="sw" style="background:linear-gradient(135deg,#0b6fa4,#6ec0ee)"></i><span data-x="th_azure"></span></button>
+  <button data-t="skyblue"><i class="sw" style="background:linear-gradient(135deg,#4aa3f0,#d4ecfc)"></i><span data-x="th_skyblue"></span></button></div>
+ <h3 data-x="m_anim"></h3><div class="seg" id="anm"><button data-a="weather" data-x="an_weather"></button><button data-a="flow" data-x="an_flow"></button><button data-a="calm" data-x="an_calm"></button><button data-a="off" data-x="an_off"></button></div>
+ <h3>&nbsp;</h3><div class="seg"><button id="inst" hidden data-x="install"></button></div>
+</aside>
+<nav id="tabbar"><a href="#s-hero" class="on"><i>🏠</i><span data-x="tb_home"></span></a><a href="#s-today"><i>🕐</i><span data-x="tb_today"></span></a><a href="#s-days"><i>📅</i><span data-x="tb_days"></span></a><a href="#s-map"><i>🗺️</i><span data-x="tb_map"></span></a><button id="tbmenu"><i>☰</i><span data-x="tb_menu"></span></button></nav>
+<div class="wrap">
+<p class="sub" data-x="sub"></p>
+<div class="search"><input id="q" data-p="ph" aria-label="Search"><button id="go" data-x="go"></button><button id="loc" data-x="loc"></button></div>
+<div class="row" id="hits"></div>
+<div class="row" id="favs"></div>
+<section class="hero" id="s-hero"><div id="fx"></div><div class="hz">
+ <div class="hrow"><div><div id="place" class="pl"></div><div class="big" id="temp">–</div><div id="hcond" class="hc"></div></div><div class="hicon" id="hicon">⛅</div></div>
+ <div id="sub" class="hs"></div><div class="chips" id="chips"></div>
+ <div class="hf"><span id="stamp"></span><span><button id="share" data-x="share"></button> <button id="star"></button></span></div></div></section>
+<div id="status"></div>
+<section id="s-alerts"><h2 data-x="a_h"></h2><div id="alerts"></div><p class="mute" data-x="a_n"></p></section>
+<section id="s-today"><h2 data-x="n_today"></h2><div class="hours" id="hours"></div></section>
+<section id="s-days"><h2 data-x="d_h"></h2><div class="dcards" id="dcards"></div><div id="dday" style="margin-top:12px"></div></section>
+<section id="s-trend"><h2 data-x="tr_h"></h2><div id="outlook"></div></section>
+<section id="s-14"><h2 data-x="n_14"></h2><div id="d14"></div><p class="mute" data-x="d14_note"></p></section>
+<section id="s-tr3"><h2 data-x="n_trend"></h2><label class="mute" for="ctry" data-x="tr_country"></label> <select id="ctry"></select><div id="trend"></div><p class="mute" data-x="tr_note"></p></section>
+<section id="s-map"><h2 data-x="map_h"></h2>
+ <div class="tabs" id="mtabs"><button data-m="wind" aria-pressed="true" data-x="wind"></button><button data-m="rain" aria-pressed="false" data-x="radar"></button><button data-m="clouds" aria-pressed="false" data-x="clouds"></button></div>
+ <div class="tabs" id="btabs"><button data-b="osm" aria-pressed="true" data-x="b_osm"></button><button data-b="sat" aria-pressed="false" data-x="b_sat"></button></div>
+ <div id="map" role="application" aria-label="Map"></div><p class="mute" id="mnote" data-x="map_n"></p></section>
+<section id="s-sea"><h2 data-x="n_sea"></h2><div class="scroll" id="seac"></div><p class="mute" data-x="sea_n"></p></section>
+<section id="s-agri"><h2 data-x="n_agri"></h2><div class="scroll" id="agric"></div><p class="mute" data-x="ag_note"></p></section>
+<section id="s-centres"><h2 data-x="c_h"></h2><div class="models" id="models"></div><p class="mute" data-x="c_n"></p></section>
+<section><div class="tabs" id="tabs"></div><div class="scroll"><svg id="chart" viewBox="0 0 800 300" role="img" aria-label="Chart"></svg></div></section>
+<section><h2 data-x="tbl_h"></h2><div class="scroll"><table id="table"></table></div></section>
+<section id="seo"><h2>Météo à Bruxelles</h2><p>Prévisions météo à Bruxelles (Belgique) : température heure par heure, pluie, vent, alertes et carte, avec comparaison de plusieurs centres de prévision (ECMWF, GFS, ICON, Météo-France). Coordonnées : 50.85, 4.35.</p></section>
+<section id="s-villes"><h2 data-x="villes"></h2><p class="mute" data-x="g_tn"></p><p class="vl"><a href="meteo-tunis.html">Tunis</a><a href="meteo-ariana.html">Ariana</a><a href="meteo-ben-arous.html">Ben Arous</a><a href="meteo-la-manouba.html">La Manouba</a><a href="meteo-nabeul.html">Nabeul</a><a href="meteo-zaghouan.html">Zaghouan</a><a href="meteo-bizerte.html">Bizerte</a><a href="meteo-beja.html">Béja</a><a href="meteo-jendouba.html">Jendouba</a><a href="meteo-le-kef.html">Le Kef</a><a href="meteo-siliana.html">Siliana</a><a href="meteo-sousse.html">Sousse</a><a href="meteo-monastir.html">Monastir</a><a href="meteo-mahdia.html">Mahdia</a><a href="meteo-sfax.html">Sfax</a><a href="meteo-kairouan.html">Kairouan</a><a href="meteo-kasserine.html">Kasserine</a><a href="meteo-sidi-bouzid.html">Sidi Bouzid</a><a href="meteo-gabes.html">Gabès</a><a href="meteo-medenine.html">Médenine</a><a href="meteo-tataouine.html">Tataouine</a><a href="meteo-gafsa.html">Gafsa</a><a href="meteo-tozeur.html">Tozeur</a><a href="meteo-kebili.html">Kébili</a><a href="meteo-djerba.html">Djerba</a><a href="meteo-hammamet.html">Hammamet</a><a href="meteo-tabarka.html">Tabarka</a><a href="meteo-douz.html">Douz</a></p><p class="mute" data-x="g_w"></p><p class="vl"><a href="meteo-paris.html">Paris</a><a href="meteo-marseille.html">Marseille</a><a href="meteo-lyon.html">Lyon</a><a href="meteo-bruxelles.html">Bruxelles</a><a href="meteo-geneve.html">Genève</a><a href="meteo-montreal.html">Montréal</a><a href="meteo-londres.html">Londres</a><a href="meteo-madrid.html">Madrid</a><a href="meteo-rome.html">Rome</a><a href="meteo-berlin.html">Berlin</a><a href="meteo-istanbul.html">Istanbul</a><a href="meteo-le-caire.html">Le Caire</a><a href="meteo-alger.html">Alger</a><a href="meteo-casablanca.html">Casablanca</a><a href="meteo-rabat.html">Rabat</a><a href="meteo-tripoli.html">Tripoli</a><a href="meteo-dubai.html">Dubaï</a><a href="meteo-riyad.html">Riyad</a><a href="meteo-doha.html">Doha</a><a href="meteo-beyrouth.html">Beyrouth</a><a href="meteo-new-york.html">New York</a><a href="meteo-sao-paulo.html">São Paulo</a><a href="meteo-dakar.html">Dakar</a><a href="meteo-lagos.html">Lagos</a><a href="meteo-nairobi.html">Nairobi</a><a href="meteo-johannesburg.html">Johannesburg</a><a href="meteo-mumbai.html">Mumbai</a><a href="meteo-jakarta.html">Jakarta</a><a href="meteo-tokyo.html">Tokyo</a><a href="meteo-sydney.html">Sydney</a></p></section>
+<p class="ft"><span data-x="foot"></span> · <a href="confidentialite.html" data-x="priv"></a> · <a href="abonnements.html" data-x="plans"></a> · <a href="admin.html" data-x="admin"></a></p>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
